@@ -2,8 +2,9 @@
 using StartasLamstvk.API.Entities;
 using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models.Event;
-using System.ComponentModel.DataAnnotations;
 using StartasLamstvk.Shared.Models.RaceOfficial;
+using StartasLamstvk.Shared.Models.Wage;
+using System.ComponentModel.DataAnnotations;
 
 namespace StartasLamstvk.API.Services
 {
@@ -105,7 +106,18 @@ namespace StartasLamstvk.API.Services
                     User = new ()
                     {
                         FullName = $"{x.User.Name} {x.User.Surname}", Id = x.UserId, PhoneNumber = x.User.PhoneNumber
-                    }
+                    },
+                    Date = x.Date,
+                    ArrivalTime = x.ArrivalTime.HasValue ? x.ArrivalTime.ToString() : null,
+                    Location = x.Location,
+                    Title = x.Title,
+                    Wages = x.Wages.Select(w => new WageReadModel
+                    {
+                        Id = w.Id,
+                        Amount = w.Amount,
+                        IsTransactionDone = w.Done,
+                        Note = w.Note
+                    }).ToList()
                 }).ToList()
             };
 
@@ -160,7 +172,18 @@ namespace StartasLamstvk.API.Services
                             FullName = $"{o.User.Name} {o.User.Surname}",
                             Id = o.UserId,
                             PhoneNumber = o.User.PhoneNumber
-                        }
+                        },
+                        Date = o.Date,
+                        ArrivalTime = o.ArrivalTime.HasValue ? o.ArrivalTime.ToString() : null,
+                        Location = o.Location,
+                        Title = o.Title,
+                        Wages = o.Wages.Select(w => new WageReadModel
+                        {
+                            Id = w.Id,
+                            Amount = w.Amount,
+                            IsTransactionDone = w.Done,
+                            Note = w.Note
+                        }).ToList()
                     }).ToList()
                 })
                 .ToListAsync();

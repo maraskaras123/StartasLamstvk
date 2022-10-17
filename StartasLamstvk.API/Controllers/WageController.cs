@@ -62,10 +62,9 @@ namespace StartasLamstvk.API.Controllers
         public async Task<ActionResult> UpdateWageStatus(
             [FromRoute] int eventId,
             [FromRoute] int raceOfficialId,
-            [FromRoute] int wageId,
-            [FromBody] WageWriteModel model)
+            [FromRoute] int wageId)
         {
-            var updated = await _wageService.UpdateWage(eventId, raceOfficialId, wageId, model);
+            var updated = await _wageService.ConfirmTransaction(eventId, raceOfficialId, wageId);
             return updated ? Ok() : NotFound(wageId);
         }
 

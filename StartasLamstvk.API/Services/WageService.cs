@@ -31,7 +31,7 @@ namespace StartasLamstvk.API.Services
                 throw new ValidationException($"Event {eventId} doesn't exist");
             }
 
-            var raceOfficial = await _context.RaceOfficials.FirstOrDefaultAsync(x => x.Id == raceOfficialId);
+            var raceOfficial = await _context.RaceOfficials.Include(x => x.Wages).FirstOrDefaultAsync(x => x.Id == raceOfficialId);
             if (raceOfficial is null)
             {
                 throw new ValidationException($"Race Official {raceOfficialId} doesn't exist");
@@ -85,14 +85,17 @@ namespace StartasLamstvk.API.Services
                         Id = x.RaceOfficial.Id,
                         Title = x.RaceOfficial.Title,
                         Date = x.RaceOfficial.Date,
-                        ArrivalTime = x.RaceOfficial.ArrivalTime,
+                        ArrivalTime = x.RaceOfficial.ArrivalTime.HasValue ? x.RaceOfficial.ArrivalTime.ToString() : null,
                         User = new ()
                         {
                             FullName = $"{x.RaceOfficial.User.Name} {x.RaceOfficial.User.Surname}",
                             Id = x.RaceOfficial.UserId,
                             PhoneNumber = x.RaceOfficial.User.PhoneNumber
                         }
-                    }
+                    },
+                    Amount = x.Amount,
+                    Note = x.Note,
+                    IsTransactionDone = x.Done
                 })
                 .ToListAsync();
 

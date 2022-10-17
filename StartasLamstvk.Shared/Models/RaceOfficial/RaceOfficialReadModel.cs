@@ -1,4 +1,5 @@
 ﻿using StartasLamstvk.Shared.Models.User;
+using StartasLamstvk.Shared.Models.Wage;
 
 namespace StartasLamstvk.Shared.Models.RaceOfficial
 {
@@ -9,6 +10,7 @@ namespace StartasLamstvk.Shared.Models.RaceOfficial
         public string Title { get; set; }
         public string Location { get; set; }
         public DateTime Date { get; set; }
-        public TimeSpan? ArrivalTime { get; set; }
+        public string ArrivalTime { get; set; }
+        public List<WageReadModel> Wages { get; set; }
     }
 }

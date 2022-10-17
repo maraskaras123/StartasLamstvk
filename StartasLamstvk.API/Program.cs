@@ -27,6 +27,8 @@ namespace StartasLamstvk.API
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IPreferenceService, PreferenceService>();
             builder.Services.AddTransient<IEventService, EventService>();
+            builder.Services.AddTransient<IRaceOfficialService, RaceOfficialService>();
+            builder.Services.AddTransient<IWageService, WageService>();
 
             var app = builder.Build();
 
