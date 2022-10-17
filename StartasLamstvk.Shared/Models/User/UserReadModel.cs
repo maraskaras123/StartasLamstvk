@@ -1,4 +1,5 @@
 ﻿using StartasLamstvk.Shared.Models.Category;
+using StartasLamstvk.Shared.Models.RacePreference;
 
 namespace StartasLamstvk.Shared.Models.User
 {
@@ -9,5 +10,7 @@ namespace StartasLamstvk.Shared.Models.User
         public string Email { get; set; }
         public LasfCategoryReadModel LasfCategory { get; set; }
         public MotoCategoryReadModel MotoCategory { get; set; }
+        public List<PreferenceReadModel> Preferences { get; set; }
+        public List<RacePreferenceReadModel> RacePreferences { get; set; }
     }
 }

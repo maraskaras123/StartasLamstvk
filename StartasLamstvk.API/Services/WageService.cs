@@ -42,6 +42,11 @@ namespace StartasLamstvk.API.Services
                 throw new ValidationException($"Race Official {raceOfficialId} doesn't work in event {eventId}");
             }
 
+            if (model.Amount <= 0.0M)
+            {
+                throw new ValidationException($"Amount cannot be null");
+            }
+
             var wage = new Wage
             {
                 RaceOfficialId = raceOfficialId,

@@ -31,14 +31,14 @@
                             private const string basePath = "wages";
 
                             public const string Endpoint = BasePath + "/" + Events.basePath + "/" + Parameters.EventId +
-                                                           "/" + basePath + "/" + Parameters.RaceOfficialId + "/" +
+                                                           "/" + RaceOfficials.basePath + "/" + Parameters.RaceOfficialId + "/" +
                                                            basePath;
 
                             public static class WageId
                             {
                                 public const string Endpoint =
                                     BasePath + "/" + Events.basePath + "/" + Parameters.EventId +
-                                    "/" + basePath + "/" + Parameters.RaceOfficialId + "/" + basePath + "/" +
+                                    "/" + RaceOfficials.basePath + "/" + Parameters.RaceOfficialId + "/" + basePath + "/" +
                                     Parameters.WageId;
                             }
                         }

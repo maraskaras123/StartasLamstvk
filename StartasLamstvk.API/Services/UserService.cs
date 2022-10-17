@@ -72,6 +72,8 @@ namespace StartasLamstvk.API.Services
                 .Include(x => x.MotoCategory).ThenInclude(x =>
                     x.MotoCategoryTranslations.Where(t => t.LanguageCode == Languages.Lt))
                 .Include(x => x.Role).ThenInclude(x => x.RoleTranslations.Where(t => t.LanguageCode == Languages.Lt))
+                .Include(x => x.UserRacePreferences).ThenInclude(x => x.Event)
+                .Include(x => x.UserPreferences).ThenInclude(x => x.RaceType).ThenInclude(x => x.RaceTypeTranslations.Where(t => t.LanguageCode == Languages.Lt))
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user is null)
@@ -102,7 +104,9 @@ namespace StartasLamstvk.API.Services
                     }
                     : null,
                 Role = new()
-                    { Id = user.RoleId, Name = user.Role.RoleTranslations.Select(x => x.Text).FirstOrDefault() }
+                { Id = user.RoleId, Name = user.Role.RoleTranslations.Select(x => x.Text).FirstOrDefault() },
+                Preferences = user.UserPreferences.Select(p => new Shared.Models.RacePreference.PreferenceReadModel { RaceTypeId = p.RaceTypeId, Title = p.RaceType.RaceTypeTranslations.Select(t => t.Text).First() }).ToList(),
+                RacePreferences = user.UserRacePreferences.Select(p => new Shared.Models.RacePreference.RacePreferenceReadModel { EventId = p.EventId, Title = p.Event.Title }).ToList()
             };
 
             return model;
@@ -151,7 +155,9 @@ namespace StartasLamstvk.API.Services
                             Title = x.MotoCategory.MotoCategoryTranslations.Select(i => i.Text).FirstOrDefault()
                         }
                         : null,
-                    Role = new() { Id = x.RoleId, Name = x.Role.RoleTranslations.Select(x => x.Text).FirstOrDefault() }
+                    Role = new() { Id = x.RoleId, Name = x.Role.RoleTranslations.Select(x => x.Text).FirstOrDefault() },
+                    Preferences = x.UserPreferences.Select(p => new Shared.Models.RacePreference.PreferenceReadModel { RaceTypeId = p.RaceTypeId, Title = p.RaceType.RaceTypeTranslations.Select(t => t.Text).First() }).ToList(),
+                    RacePreferences = x.UserRacePreferences.Select(p => new Shared.Models.RacePreference.RacePreferenceReadModel { EventId = p.EventId, Title = p.Event.Title }).ToList()
                 })
                 .ToListAsync();
 
