@@ -9,5 +9,6 @@
         public const string EventId = "{eventId:int}";
         public const string RaceTypeId = "{raceTypeId:int}";
         public const string RaceOfficialId = "{raceOfficialId:int}";
+        public const string WageId = "{wageId:int}";
     }
 }

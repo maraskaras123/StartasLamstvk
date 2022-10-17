@@ -1,4 +1,4 @@
-﻿using StartasLamstvk.Shared.Models.RaceOfficials;
+﻿using StartasLamstvk.Shared.Models.RaceOfficial;
 using StartasLamstvk.Shared.Models.RaceType;
 using StartasLamstvk.Shared.Models.User;
 

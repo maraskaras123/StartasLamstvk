@@ -1,6 +1,6 @@
 ﻿using StartasLamstvk.Shared.Models.User;
 
-namespace StartasLamstvk.Shared.Models.RaceOfficials
+namespace StartasLamstvk.Shared.Models.RaceOfficial
 {
     public class RaceOfficialReadModel
     {

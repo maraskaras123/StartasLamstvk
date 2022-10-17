@@ -1,4 +1,4 @@
-﻿namespace StartasLamstvk.Shared.Models.RaceOfficials
+﻿namespace StartasLamstvk.Shared.Models.RaceOfficial
 {
     public class RaceOfficialWriteModel
     {

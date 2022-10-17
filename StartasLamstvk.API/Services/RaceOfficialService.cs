@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StartasLamstvk.API.Entities;
-using StartasLamstvk.Shared.Models.RaceOfficials;
 using System.ComponentModel.DataAnnotations;
+using StartasLamstvk.Shared.Models.RaceOfficial;
 
 namespace StartasLamstvk.API.Services
 {
@@ -24,7 +24,7 @@ namespace StartasLamstvk.API.Services
 
         public async Task<int> CreateRaceOfficial(int eventId, RaceOfficialWriteModel model)
         {
-            var @event = await _context.Events.AsNoTracking().FirstOrDefaultAsync(x => x.Id == eventId);
+            var @event = await _context.Events.FirstOrDefaultAsync(x => x.Id == eventId);
             if (@event is null)
             {
                 throw new ValidationException($"Event {eventId} doesn't exist");

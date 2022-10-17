@@ -2,8 +2,8 @@
 using StartasLamstvk.API.Entities;
 using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models.Event;
-using StartasLamstvk.Shared.Models.RaceOfficials;
 using System.ComponentModel.DataAnnotations;
+using StartasLamstvk.Shared.Models.RaceOfficial;
 
 namespace StartasLamstvk.API.Services
 {

@@ -2,8 +2,8 @@
 using StartasLamstvk.API.Services;
 using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models;
-using StartasLamstvk.Shared.Models.RaceOfficials;
 using System.Net;
+using StartasLamstvk.Shared.Models.RaceOfficial;
 
 namespace StartasLamstvk.API.Controllers
 {
