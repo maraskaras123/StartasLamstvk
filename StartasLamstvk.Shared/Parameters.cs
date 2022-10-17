@@ -8,5 +8,6 @@
         public const string PreferenceId = "{preferenceId:int}";
         public const string EventId = "{eventId:int}";
         public const string RaceTypeId = "{raceTypeId:int}";
+        public const string RaceOfficialId = "{raceOfficialId:int}";
     }
 }

@@ -2,6 +2,7 @@
 using StartasLamstvk.API.Entities;
 using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models.Event;
+using StartasLamstvk.Shared.Models.RaceOfficials;
 using System.ComponentModel.DataAnnotations;
 
 namespace StartasLamstvk.API.Services
@@ -60,6 +61,7 @@ namespace StartasLamstvk.API.Services
             var @event = await _context.Events
                 .AsNoTracking()
                 .Include(x => x.RaceOfficials).ThenInclude(x => x.Wages)
+                .Include(x => x.RaceOfficials).ThenInclude(x => x.User)
                 .Include(x => x.Author)
                 .Include(x => x.Manager)
                 .Include(x => x.UserRacePreferences).ThenInclude(x => x.User).ThenInclude(x => x.LasfCategory)
@@ -75,6 +77,7 @@ namespace StartasLamstvk.API.Services
 
             var model = new EventReadModel
             {
+                Id = @event.Id,
                 DateFrom = @event.DateFrom,
                 DateTo = @event.DateTo,
                 Author = new ()
@@ -95,7 +98,15 @@ namespace StartasLamstvk.API.Services
                 {
                     RaceTypeId = @event.RaceTypeId,
                     Title = @event.RaceType.RaceTypeTranslations.Select(t => t.Text).FirstOrDefault()
-                }
+                },
+                RaceOfficials = @event.RaceOfficials.Select(x => new RaceOfficialReadModel
+                {
+                    Id = x.Id,
+                    User = new ()
+                    {
+                        FullName = $"{x.User.Name} {x.User.Surname}", Id = x.UserId, PhoneNumber = x.User.PhoneNumber
+                    }
+                }).ToList()
             };
 
             return model;
@@ -117,6 +128,7 @@ namespace StartasLamstvk.API.Services
             var events = await query
                 .Select(x => new EventReadModel
                 {
+                    Id = x.Id,
                     DateFrom = x.DateFrom,
                     DateTo = x.DateTo,
                     Author = new ()
@@ -139,7 +151,17 @@ namespace StartasLamstvk.API.Services
                     {
                         RaceTypeId = x.RaceTypeId,
                         Title = x.RaceType.RaceTypeTranslations.Select(t => t.Text).FirstOrDefault()
-                    }
+                    },
+                    RaceOfficials = x.RaceOfficials.Select(o => new RaceOfficialReadModel
+                    {
+                        Id = x.Id,
+                        User = new ()
+                        {
+                            FullName = $"{o.User.Name} {o.User.Surname}",
+                            Id = o.UserId,
+                            PhoneNumber = o.User.PhoneNumber
+                        }
+                    }).ToList()
                 })
                 .ToListAsync();
 

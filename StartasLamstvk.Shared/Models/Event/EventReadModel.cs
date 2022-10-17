@@ -1,4 +1,5 @@
-﻿using StartasLamstvk.Shared.Models.RaceType;
+﻿using StartasLamstvk.Shared.Models.RaceOfficials;
+using StartasLamstvk.Shared.Models.RaceType;
 using StartasLamstvk.Shared.Models.User;
 
 namespace StartasLamstvk.Shared.Models.Event
@@ -15,5 +16,6 @@ namespace StartasLamstvk.Shared.Models.Event
         public string Title { get; set; }
         public string Description { get; set; }
         public RaceTypeReadModel RaceType { get; set; }
+        public List<RaceOfficialReadModel> RaceOfficials { get; set; }
     }
 }

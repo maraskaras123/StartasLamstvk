@@ -13,6 +13,20 @@
             public static class EventId
             {
                 public const string Endpoint = BasePath + "/" + basePath + "/" + Parameters.EventId;
+
+                public static class RaceOfficials
+                {
+                    private const string basePath = "race-officials";
+
+                    public const string Endpoint =
+                        BasePath + "/" + Events.basePath + "/" + Parameters.EventId + "/" + basePath;
+
+                    public static class RaceOfficialId
+                    {
+                        public const string Endpoint = BasePath + "/" + Events.basePath + "/" + Parameters.EventId +
+                                                       "/" + basePath + "/" + Parameters.RaceOfficialId;
+                    }
+                }
             }
         }
 

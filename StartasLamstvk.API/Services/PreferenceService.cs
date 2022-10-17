@@ -29,7 +29,7 @@ namespace StartasLamstvk.API.Services
         public async Task<int> CreateRacePreference(int userId, RacePreferenceWriteModel model)
         {
             var date = model.Date.Date;
-            var @event = await _context.Events.FirstOrDefaultAsync(x => x.Id == model.EventId);
+            var @event = await _context.Events.AsNoTracking().FirstOrDefaultAsync(x => x.Id == model.EventId);
             if (@event is null)
             {
                 throw new ValidationException($"Event {model.EventId} doesn't exist");
