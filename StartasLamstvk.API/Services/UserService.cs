@@ -11,8 +11,8 @@ namespace StartasLamstvk.API.Services
     public interface IUserService
     {
         Task<int> CreateUser(UserWriteModel model);
-        Task<UserBaseModel> GetUser(int userId);
-        Task<List<UserBaseModel>> GetUsers(EnumRole? roleId, List<int> userIds);
+        Task<UserReadModel> GetUser(int userId);
+        Task<List<UserReadModel>> GetUsers(EnumRole? roleId, List<int> userIds);
         Task<bool> UpdateUser(int id, UserWriteModel model);
         Task<bool> UpdateMotoCategory(int userId, EnumMotoCategory categoryId);
         Task<bool> UpdateLasfCategory(int userId, EnumLasfCategory categoryId);
@@ -49,7 +49,8 @@ namespace StartasLamstvk.API.Services
                 PhoneNumber = model.PhoneNumber,
                 Location = model.Location,
                 LasfCategoryId = model.LasfCategoryId,
-                MotoCategoryId = model.MotoCategoryId
+                MotoCategoryId = model.MotoCategoryId,
+                RoleId = model.RoleId
             };
 
             await _context.Users.AddAsync(user);
@@ -57,7 +58,7 @@ namespace StartasLamstvk.API.Services
             return user.Id;
         }
 
-        public async Task<UserBaseModel> GetUser(int userId)
+        public async Task<UserReadModel> GetUser(int userId)
         {
             var user = await _context.Users
                 .AsNoTracking()
@@ -102,7 +103,7 @@ namespace StartasLamstvk.API.Services
             return model;
         }
 
-        public async Task<List<UserBaseModel>> GetUsers(EnumRole? roleId, List<int> userIds)
+        public async Task<List<UserReadModel>> GetUsers(EnumRole? roleId, List<int> userIds)
         {
             var query = _context.Users
                 .AsNoTracking()
@@ -147,7 +148,6 @@ namespace StartasLamstvk.API.Services
                         : null,
                     Role = new() { Id = x.RoleId, Name = x.Role.RoleTranslations.Select(x => x.Text).FirstOrDefault() }
                 })
-                .Cast<UserBaseModel>()
                 .ToListAsync();
 
             return users;

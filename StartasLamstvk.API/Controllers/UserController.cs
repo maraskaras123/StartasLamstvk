@@ -31,7 +31,7 @@ namespace StartasLamstvk.API.Controllers
         [HttpGet(Routes.Users.Endpoint)]
         [ProducesResponseType(typeof(List<UserReadModel>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<List<UserReadModel>>> GetUsers(
-            [FromQuery] EnumRole roleId,
+            [FromQuery] EnumRole? roleId,
             [FromQuery] List<int> userIds)
         {
             var users = await _userService.GetUsers(roleId, userIds);

@@ -26,12 +26,12 @@ namespace StartasLamstvk.Shared.Helpers
 
         private static string GetEnumTableName<T>(T enumId)
         {
-            var enumName = enumId.GetType().Name;
+            var enumName = enumId.GetType().Name.Replace("Enum", "");
             var enumTableName = enumName.EndsWith("y")
                 ? $"{enumName.Replace($"{enumName[enumName.LastIndexOf("y", StringComparison.Ordinal)]}", "ies")}"
                 : enumName.EndsWith("s")
-                    ? $"Enum{enumName}es"
-                    : $"Enum{enumName}s";
+                    ? $"{enumName}es"
+                    : $"{enumName}s";
 
             return enumTableName;
         }
@@ -40,8 +40,8 @@ namespace StartasLamstvk.Shared.Helpers
             where T : Enum
         {
             migrationBuilder.InsertData(
-                table: $"{enumId.GetType().Name}Translations",
-                columns: new[] { $"{enumId.GetType().Name}Id", "LanguageCode", "Text" },
+                table: $"{enumId.GetType().Name.Replace("Enum", "")}Translations",
+                columns: new[] { $"{enumId.GetType().Name.Replace("Enum", "")}Id", "LanguageCode", "Text" },
                 values: new object[] { Convert.ToInt32(enumId), languageCode, text });
         }
     }

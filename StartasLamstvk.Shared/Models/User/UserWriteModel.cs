@@ -10,6 +10,7 @@ namespace StartasLamstvk.Shared.Models.User
         public string Location { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public EnumRole RoleId { get; set; }
         public EnumLasfCategory? LasfCategoryId { get; set; }
         public EnumMotoCategory? MotoCategoryId { get; set; }
     }

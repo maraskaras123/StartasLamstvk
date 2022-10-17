@@ -198,13 +198,13 @@ namespace StartasLamstvk.API.Migrations
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Events_Users_ManagerId",
                         column: x => x.ManagerId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Events_Users_UserId",
                         column: x => x.UserId,
@@ -326,7 +326,7 @@ namespace StartasLamstvk.API.Migrations
                         column: x => x.DriverId,
                         principalTable: "RaceOfficials",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Crews_RaceOfficials_Passenger1Id",
                         column: x => x.Passenger1Id,
