@@ -4,6 +4,18 @@
     {
         private const string BasePath = "/api";
 
+        public static class Events
+        {
+            private const string basePath = "events";
+
+            public const string Endpoint = BasePath + "/" + basePath;
+
+            public static class EventId
+            {
+                public const string Endpoint = BasePath + "/" + basePath + "/" + Parameters.EventId;
+            }
+        }
+
         public static class Users
         {
             private const string basePath = "users";

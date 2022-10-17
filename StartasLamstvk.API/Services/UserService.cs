@@ -30,6 +30,11 @@ namespace StartasLamstvk.API.Services
 
         public async Task<int> CreateUser(UserWriteModel model)
         {
+            if (!Enum.IsDefined(model.RoleId))
+            {
+                throw new ValidationException($"Role {model.RoleId} not found");
+            }
+
             if (model.LasfCategoryId.HasValue && !Enum.IsDefined(model.LasfCategoryId.Value))
             {
                 throw new ValidationException($"Lasf Category {model.LasfCategoryId} not found");
@@ -166,7 +171,6 @@ namespace StartasLamstvk.API.Services
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-
             if (user is null)
             {
                 return false;

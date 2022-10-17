@@ -48,7 +48,7 @@ namespace StartasLamstvk.API.Controllers
         }
 
         [HttpPut(Routes.Users.UserId.Endpoint)]
-        [ProducesResponseType(typeof(UserReadModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> UpdateUser([FromRoute] int userId, [FromBody] UserWriteModel model)
         {
@@ -57,7 +57,7 @@ namespace StartasLamstvk.API.Controllers
         }
 
         [HttpPatch(Routes.Users.UserId.Lasf.LasfCategoryId.Endpoint)]
-        [ProducesResponseType(typeof(UserReadModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> UpdateLasfCategory(
             [FromRoute] int userId,
@@ -68,7 +68,7 @@ namespace StartasLamstvk.API.Controllers
         }
 
         [HttpPatch(Routes.Users.UserId.Moto.MotoCategoryId.Endpoint)]
-        [ProducesResponseType(typeof(UserReadModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> UpdateMotoCategory(
             [FromRoute] int userId,
