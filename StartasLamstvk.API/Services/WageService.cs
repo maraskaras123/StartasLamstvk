@@ -44,7 +44,7 @@ namespace StartasLamstvk.API.Services
 
             if (model.Amount <= 0.0M)
             {
-                throw new ValidationException($"Amount cannot be null");
+                throw new ValidationException("Amount cannot be negative");
             }
 
             var wage = new Wage
