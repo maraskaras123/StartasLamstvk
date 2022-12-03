@@ -1,5 +1,4 @@
-﻿using StartasLamstvk.Shared.Models;
-using StartasLamstvk.Shared.Models.Enum;
+﻿using StartasLamstvk.Shared.Models.Enum;
 
 namespace StartasLamstvk.API.Entities
 {

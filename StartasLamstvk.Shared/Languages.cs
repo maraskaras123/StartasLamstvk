@@ -7,13 +7,13 @@ namespace StartasLamstvk.Shared
         public const string En = "en";
         public const string Lt = "lt";
 
-        public static readonly List<CultureInfo> CultureLanguages = new()
+        public static readonly List<CultureInfo> CultureLanguages = new ()
         {
-            new CultureInfo(En),
-            new CultureInfo(Lt)
+            new (En),
+            new (Lt)
         };
 
-        public static readonly List<(string LanguageCode, string DisplayName)> SupportedLanguages = new()
+        public static readonly List<(string LanguageCode, string DisplayName)> SupportedLanguages = new ()
         {
             (En, "English"),
             (Lt, "Lietuvių")

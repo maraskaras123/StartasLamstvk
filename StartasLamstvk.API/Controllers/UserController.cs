@@ -5,6 +5,7 @@ using StartasLamstvk.Shared.Models;
 using StartasLamstvk.Shared.Models.Enum;
 using StartasLamstvk.Shared.Models.User;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StartasLamstvk.API.Controllers
 {
@@ -28,6 +29,7 @@ namespace StartasLamstvk.API.Controllers
             return Created(Routes.Users.UserId.Endpoint.Replace(Parameters.UserId, userId.ToString()), userId);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet(Routes.Users.Endpoint)]
         [ProducesResponseType(typeof(List<UserReadModel>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<List<UserReadModel>>> GetUsers(

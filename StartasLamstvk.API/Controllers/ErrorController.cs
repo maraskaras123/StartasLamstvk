@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
@@ -10,7 +11,7 @@ namespace StartasLamstvk.API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase
     {
-        [Route("/api/errors")]
+        [Route(Routes.Errors.Endpoint)]
         public ErrorResponse ErrorDevelopment()
         {
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
@@ -49,7 +50,7 @@ namespace StartasLamstvk.API.Controllers
             var errors = new List<Error> { new (exception.Message, true) };
             if (!string.IsNullOrEmpty(exception.InnerException?.Message))
             {
-                errors.Add(new Error(exception.InnerException?.Message, true));
+                errors.Add(new (exception.InnerException?.Message, true));
             }
 
             return errors;

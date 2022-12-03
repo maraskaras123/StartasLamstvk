@@ -4,6 +4,16 @@
     {
         private const string BasePath = "/api";
 
+        public static class Auth
+        {
+            private const string basePath = "/auth";
+
+            public static class Login
+            {
+                public const string Endpoint = basePath + "/login";
+            }
+        }
+
         public static class Events
         {
             private const string basePath = "events";
@@ -45,6 +55,11 @@
                     }
                 }
             }
+        }
+
+        public static class Errors
+        {
+            public const string Endpoint = BasePath + "/errors";
         }
 
         public static class Users

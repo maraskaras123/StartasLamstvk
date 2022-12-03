@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StartasLamstvk.API.Entities;
 
 namespace StartasLamstvk.API
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<UserPreference> UserPreferences { get; set; }
         public DbSet<UserRacePreference> UserRacePreferences { get; set; }
         public DbSet<Event> Events { get; set; }
@@ -18,7 +18,6 @@ namespace StartasLamstvk.API
         public DbSet<MotoCategoryTranslation> MotoCategoryTranslations { get; set; }
         public DbSet<RaceType> RaceTypes { get; set; }
         public DbSet<RaceTypeTranslation> RaceTypeTranslations { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<RoleTranslation> RoleTranslations { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -27,28 +26,31 @@ namespace StartasLamstvk.API
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Driver);
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Passenger1);
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Passenger2);
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Passenger3);
-            modelBuilder.Entity<Crew>()
-                .HasOne(x => x.Passenger4);
-
-            modelBuilder.Entity<Event>()
-                .HasOne(x => x.Author);
-            modelBuilder.Entity<Event>()
-                .HasOne(x => x.Manager);
-
-            modelBuilder.Entity<User>()
-                .HasMany(x => x.ManagedEvents);
-            modelBuilder.Entity<User>()
-                .HasMany(x => x.RaceOfficials);
-
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Crew>(entity =>
+            {
+                entity.HasOne(x => x.Driver);
+                entity.HasOne(x => x.Passenger1);
+                entity.HasOne(x => x.Passenger2);
+                entity.HasOne(x => x.Passenger3);
+                entity.HasOne(x => x.Passenger4);
+            });
+
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.HasOne(x => x.Author);
+                entity.HasOne(x => x.Manager);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasMany(x => x.ManagedEvents);
+                entity.HasMany(x => x.RaceOfficials);
+                entity.ToTable("Users");
+            });
+
+            modelBuilder.Entity<Role>(entity => entity.ToTable("Roles"));
         }
     }
 }
