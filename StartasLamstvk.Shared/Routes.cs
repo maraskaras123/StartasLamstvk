@@ -12,6 +12,11 @@
             {
                 public const string Endpoint = basePath + "/login";
             }
+
+            public static class Logout
+            {
+                public const string Endpoint = basePath + "/logout";
+            }
         }
 
         public static class Events

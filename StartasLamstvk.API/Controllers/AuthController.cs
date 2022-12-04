@@ -8,6 +8,8 @@ using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StartasLamstvk.API.Controllers
 {
@@ -87,6 +89,15 @@ namespace StartasLamstvk.API.Controllers
             }
 
             return Ok(new AuthResponse { Status = "Success", Message = "User created successfully!" });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return NoContent();
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)

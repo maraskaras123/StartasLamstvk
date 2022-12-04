@@ -7,7 +7,6 @@ using StartasLamstvk.API.Services;
 using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models.Enum;
 using System.Text;
-using Microsoft.OpenApi.Models;
 
 namespace StartasLamstvk.API
 {
@@ -37,7 +36,7 @@ namespace StartasLamstvk.API
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.SaveToken = true;
+                options.SaveToken = false;
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new ()
                 {
@@ -50,21 +49,8 @@ namespace StartasLamstvk.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition(
-                    "Bearer",
-                    new()
-                    {
-                        Description = @"JWT Authorization header using the Bearer scheme. <BR/><BR/> 
-                      Enter your token in the text input below.
-                      <BR/><BR/>Example: '12345abcdef'",
-                        Name = "Authorization",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "Bearer"
-                    });
-            });
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
@@ -86,6 +72,9 @@ namespace StartasLamstvk.API
             }
 
             InitializeDatabase(app).Wait();
+
+            app.UseCors(cors =>
+                cors.AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(_ => true).AllowCredentials());
 
             app.UseHttpsRedirection();
 

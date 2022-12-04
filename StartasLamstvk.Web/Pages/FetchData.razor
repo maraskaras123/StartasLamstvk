@@ -1,0 +1,46 @@
+﻿@page "/fetchdata"
+@using StartasLamstvk.Shared.Models.User
+@using StartasLamstvk.Shared
+@inject AuthorizedHttpClient _httpClient
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (_users is null || !_users.Any())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in _users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FullName</td>
+                    <td>@user.Role.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<UserReadModel> _users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _users = await _httpClient.GetUsers();
+    }
+}
