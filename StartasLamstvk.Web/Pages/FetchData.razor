@@ -1,7 +1,7 @@
 ﻿@page "/fetchdata"
 @using StartasLamstvk.Shared.Models.User
-@using StartasLamstvk.Shared
-@inject AuthorizedHttpClient _httpClient
+@using StartasLamstvk.Shared.Clients
+@inject UsersHttpClient _userHttpClient
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -41,6 +41,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _users = await _httpClient.GetUsers();
+        _users = await _userHttpClient.GetUsers();
     }
 }

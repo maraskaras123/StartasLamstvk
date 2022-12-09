@@ -1,40 +1,44 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StartasLamstvk.API.Entities;
 using StartasLamstvk.Shared;
 using StartasLamstvk.Shared.Models.Auth;
-using System.ComponentModel.DataAnnotations;
+using StartasLamstvk.Shared.Models.Enum;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace StartasLamstvk.API.Controllers
 {
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _configuration;
 
         public AuthController(
             UserManager<User> userManager,
-            RoleManager<Role> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost]
         [Route(Routes.Auth.Login.Endpoint)]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _context.Users
+                .Include(x => x.Role)
+                .ThenInclude(x => x.RoleTranslations)
+                .FirstOrDefaultAsync(x => x.Email == model.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -44,25 +48,33 @@ namespace StartasLamstvk.API.Controllers
                     new (ClaimTypes.Name, user.UserName),
                     new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
-
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new (ClaimTypes.Role, userRole));
-                }
+                authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
 
                 var token = GetToken(authClaims);
-
-                return Ok(new
+                string language = HttpContext.Request.Headers["x-language"];
+                //language = string.IsNullOrEmpty(language) ? "lt" : language;
+                return Ok(new AuthResponse
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    ExpiredAt = token.ValidTo,
+                    User = new()
+                    {
+                        FullName = $"{user.Name} {user.Surname}",
+                        Id = user.Id,
+                        PhoneNumber = user.PhoneNumber,
+                        Role = new()
+                        {
+                            Id = (EnumRole)user.RoleId,
+                            Name = user.Role.RoleTranslations.First(x => x.LanguageCode == (language ?? "lt")).Text
+                        }
+                    }
                 });
             }
 
             return Unauthorized();
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] LoginModel model)
         {
@@ -89,11 +101,11 @@ namespace StartasLamstvk.API.Controllers
             }
 
             return Ok(new AuthResponse { Status = "Success", Message = "User created successfully!" });
-        }
+        }*/
 
-        [HttpPost]
+        [HttpDelete]
         [Authorize]
-        [Route("logout")]
+        [Route(Routes.Auth.Logout.Endpoint)]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

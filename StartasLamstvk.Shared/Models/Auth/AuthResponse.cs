@@ -1,8 +1,11 @@
-﻿namespace StartasLamstvk.Shared.Models.Auth
+﻿using StartasLamstvk.Shared.Models.User;
+
+namespace StartasLamstvk.Shared.Models.Auth
 {
     public class AuthResponse
     {
-        public string Status { get; set; }
-        public string Message { get; set; }
+        public string Token { get; set; }
+        public DateTime ExpiredAt { get; set; }
+        public UserBaseModel User { get; set; }
     }
 }

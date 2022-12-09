@@ -1,7 +1,13 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using StartasLamstvk.Shared
+@inject AuthStateContainer _authState
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        @if (_loaded)
+        {
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        }
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
@@ -10,3 +16,14 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code{
+    private bool _loaded;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loaded = false;
+        await _authState.LoadToken();
+        _loaded = true;
+    }
+}

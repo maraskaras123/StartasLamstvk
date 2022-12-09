@@ -4,7 +4,7 @@ namespace StartasLamstvk.Shared
 {
     public class FutureDateAttribute : ValidationAttribute
     {
-        public override bool IsValid(object? value)
+        public override bool IsValid(object value)
         {
             if (value is null)
             {

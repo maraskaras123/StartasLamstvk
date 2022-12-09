@@ -6,6 +6,8 @@ namespace StartasLamstvk.API
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
+        public override DbSet<User> Users { get; set; }
+        public override DbSet<Role> Roles { get; set; }
         public DbSet<UserPreference> UserPreferences { get; set; }
         public DbSet<UserRacePreference> UserRacePreferences { get; set; }
         public DbSet<Event> Events { get; set; }

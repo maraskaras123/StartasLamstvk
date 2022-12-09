@@ -1,17 +1,129 @@
-﻿@inherits LayoutComponentBase
+﻿@using StartasLamstvk.Shared
+@using StartasLamstvk.Shared.Clients
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+@inject AuthStateContainer _authState
+@inject AuthorizedHttpClient _authorizedHttpClient
+@inject UsersHttpClient _usersHttpClient
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+<CascadingValue Value="this">
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu/>
         </div>
+        <main>
+            <div class="top-row px-4">
+                <div style="width: 70px; text-align: right;">
+                    @if (_authState.User is not null)
+                    {
+                        <a class="btn btn-sm btn-primary text-white" title="Account" href="account">
+                            <span class="oi oi-key"></span>
+                        </a>
+                        <button class="btn btn-sm btn-danger" title="Logout" @onclick="Logout">
+                            <span class="oi oi-account-logout"></span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-success" title="Login" @onclick="OpenLogin">
+                            <span class="oi oi-account-login"></span>
+                        </button>
+                    }
+                </div>
+            </div>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+</CascadingValue>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+<div class="modal-backdrop fade @(show ? "show" : "") @(display ? "d-block" : "d-none")"></div>
+
+<div class="modal fade @(show ? "show" : "")  @(display ? "d-block" : "d-none")" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="vardas@teisejai.lt" autocomplete="off" required @bind-value="email"/>
+                </div>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" autocomplete="off" required @bind-value="password"/>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" @onclick="Login">Login</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+@code {
+    private bool show, display;
+    private string email, password;
+
+    public string GetUserName()
+    {
+        return _authState.User?.FullName ?? "";
+    }
+
+    public void OpenLogin()
+    {
+        display = true;
+        show = true;
+    }
+
+    public async Task Logout()
+    {
+        await _authorizedHttpClient.Logout();
+        StateHasChanged();
+    }
+
+    private void Close()
+    {
+        show = false;
+        display = false;
+        email = null;
+        password = null;
+    }
+
+    private async Task Login()
+    {
+        if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+        {
+            if (await _authorizedHttpClient.Login(new() { Email = email, Password = password }))
+            {
+                email = null;
+                password = null;
+                Close();
+                StateHasChanged();
+            }
+        }
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        _authState.OnChange += StateHasChanged;
+        return base.OnInitializedAsync();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        /*if (_authState.UserId.HasValue && _authState.User is null)
+        {
+            StateHasChanged();
+        }*/
+        return base.OnAfterRenderAsync(firstRender);
+    }
+}

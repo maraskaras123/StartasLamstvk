@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="TabBlazor" Version="0.7.10-alpha" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,10 +21,6 @@
     <Reference Include="Microsoft.Extensions.Http">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.5\ref\net6.0\Microsoft.Extensions.Http.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Login\" />
   </ItemGroup>
 
 </Project>
